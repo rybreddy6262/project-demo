@@ -8,9 +8,27 @@ st.set_page_config(page_title='Prediction Of Disease Outbreaks',
                    page_icon='🩺')
 
 # Load trained models
-diabetes_model = pickle.load(open(r"E:\AI Internship\Predictions\training_models\diabetes_model.sav", "rb"))
-heart_model = pickle.load(open(r"E:\AI Internship\Predictions\training_models\heart_model.sav", "rb"))
-parkinsons_model = pickle.load(open(r"E:\AI Internship\Predictions\training_models\parkinsons_model.sav", "rb"))
+import os
+import pickle
+
+# Get the directory of the current script
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Define model paths
+diabetes_model_path = os.path.join(base_dir, "models", "diabetes_model.sav")
+heart_model_path = os.path.join(base_dir, "models", "heart_model.sav")
+parkinsons_model_path = os.path.join(base_dir, "models", "parkinsons_model.sav")
+
+# Load models safely
+def load_model(model_path):
+    if os.path.exists(model_path):
+        return pickle.load(open(model_path, "rb"))
+    else:
+        raise FileNotFoundError(f"Model file not found: {model_path}")
+
+diabetes_model = load_model(diabetes_model_path)
+heart_model = load_model(heart_model_path)
+parkinsons_model = load_model(parkinsons_model_path)
 
 # Sidebar Menu
 with st.sidebar:
